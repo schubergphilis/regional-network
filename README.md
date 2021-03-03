@@ -3,7 +3,7 @@ This module implements a regional network with multiple VPCs per environment and
 The independent modules do not really make much sense in isolation as they are designed to deliver a full working networking following a specific network design that deals with specific requirements.
 Thus this module is a very opinionated implementation of the following design. 
 
-[] schematic here
+![Network Design](./network_design.svg)
 
 Principles
 
