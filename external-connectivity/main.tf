@@ -22,11 +22,11 @@ module "egress_vpc" {
   share_private_subnets          = false
   share_public_subnets           = false
   enable_nat_gateway             = true
-  cloudwatch_flow_log_group_name = var.cloudwatch_flow_log_group_name
   flow_logs = {
     retention_in_days = var.flow_log_retention_period_in_days
     traffic_type      = "ALL"
     iam_role_name     = "${var.prepend_resource_type ? "vpc-flow-logs-" : ""}${var.egress_vpc.name}-${var.region}"
+    log_group_name    =  var.cloudwatch_flow_log_group_name
   }
 }
 
