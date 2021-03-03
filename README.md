@@ -108,7 +108,7 @@ The files that would need editing according to the desired functionality are:
   for the deployment of VPCs the state region is always the same for all regional VPCs created. So the **state_region** is going to be used throughout.
   
 * [layout.hcl](./example/layout.hcl) Holds the information of the VPCs to be deployed and settings of them, like dhcp options.
-* [connectivity.hcl](./example/connectivity.hcl) Holds the information about the ergess VPC.
+* [connectivity.hcl](./example/connectivity.hcl) Holds the information about the egress VPC.
 * [resolving.hcl](./example/resolving.hcl) Holds the information about the resolving domains, both overriding and forwarding.
 
 
