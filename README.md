@@ -5,40 +5,46 @@ Thus this module is a very opinionated implementation of the following design.
 
 ![Network Design](./network_design.svg)
 
-Principles
+## Principles
 
-VPCs per environment:
+### VPCs per environment
 
-    The pattern utilizes a VPC per invironment for development, test, acceptance and production. 
-    Each VPC will have public and private subnets as is described by AWS networking best practices.
-    Those subnets will be shared through Resource Access Manager and all workloads deployd in a landing
-    zone with this networking will get access to the subnets per their respective environment and deploy 
-    resources based on the subnet sharing design. 
-[Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html)
+The pattern utilizes a VPC per invironment for development, test, acceptance and production. 
+Each VPC will have public and private subnets as is described by AWS networking best practices.
+Those subnets will be shared through Resource Access Manager and all workloads deployd in a landing
+zone with this networking will get access to the subnets per their respective environment and deploy 
+resources based on the subnet sharing design. [AWS Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html) 
+on shared subnets.
 
-Mesh VPCs:
+### Mesh VPCs
 
-    The concept of a mesh VPC is an environmental VPC that is peered to other VPCs not of the same environment.
-    Example: Client states that it is important that a development system has network connectivity to a production system.
-             
-    This networking pattern is generally not advised but is often a hard business requirement often seen as a hard requirement for SAP systems, 
-    therefore this optional set of VPCs can be deployed so systems requiring this capability can be somewhat isolated from other standard systems.
+The concept of a mesh VPC is an environmental VPC that is peered to other VPCs not of the same environment.
+Example: Client states that it is important that a development system has network connectivity to a production system.
+         
+This networking pattern is generally not advised but is often a hard business requirement often seen as a hard requirement for SAP systems, 
+therefore this optional set of VPCs can be deployed so systems requiring this capability can be somewhat isolated from other standard systems.
 
-Service VPC:
+### Service VPC
     
-    This VPC type implements a common 'shared services' pattern. Its features include peering to all other VPCs in the 
-    landscape and will also house features like dns resolvers that provide services region wide to the full network. 
-    The workloads that will be flagged as services will have their production account use the services VPC for their resources.
-    Effectivelly what that means is that from the workload's perspective they alway have up to four environments: Development, 
-    Test, Acceptance and Production with the production being isolated in case of "normal" workloads and connected to everything
-    in case of a "service" workload. A good example for a "service" workload would be ansible AWX/Tower that would need to 
-    be able to execute ansible scripts across all possible environments or a hosted AD that would provide domain joins across environments.
+This VPC type implements a common 'shared services' pattern. Its features include peering to all other VPCs in the 
+landscape and will also house features like dns resolvers that provide services region wide to the full network. 
+
+The workloads that will be flagged as services will have their production account use the Services VPC for their resources.
+
+Effectively what that means is that from the workload's perspective they always have up to four environments: Development, 
+Test, Acceptance and Production with the production being isolated in case of "normal" workloads and connected to everything
+in case of a "service" workload. A good example for a "service" workload would be ansible [AWX](https://github.com/ansible/awx) / 
+[Tower](https://www.ansible.com/products/tower)that would need to be able to execute ansible scripts across all possible environments 
+or a hosted AD that would provide domain joins across environments.
 
 
-Transit gateway:
+### Transit gateway
     
-    An AWS transit gateway that provides all regional interconnectivity/on-prem connectivity and handles all transport
-    of egress traffic towards the egress VPC.
+An AWS transit gateway that provides all regional interconnectivity/on-prem connectivity and handles all transport
+of egress traffic towards the egress VPC. All inter-region connectivity is handled by the VPCs and their peering according 
+to their environment, with all same environment VPCs (isolated and meshed) peered and routed between them, all mesh VPCs peered
+and routed between them and the services VPC being peered and routed to all the other ones. If traffic is not bound to any of those
+endpoints it will be forwarded to the transit gateway that will handle it accordingly.
     
 
 Egress VPC:
