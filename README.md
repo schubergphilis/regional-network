@@ -99,7 +99,17 @@ All the above modules depend and use modules that exist under [modules](./module
 
 ## Usage
 
-Under [examle](./example) there is a fully functional structure for eu-west-1 region with default values. Edit accordingly for specific details.
+Under [examle](./example) there is a fully functional structure for eu-west-1 region with default values. 
+The files that would need editing according to the desired functionality are:
+
+* [configuration.hcl](./example/configuration.hcl) Holds basic configuration like acceptable versions for terraform and aws provider. 
+  Needs the account id of the networking accound that will house all the VPCs and required the setting of which region the state file 
+  and dynamoDB lock table with be created along with the region that it is targeting. Import note is that although the region will change
+  for the deployment of VPCs the state region is always the same for all regional VPCs created. So the **state_region** is going to be used throughout.
+  
+* [layout.hcl](./example/layout.hcl) Holds the information of the VPCs to be deployed and settings of them, like dhcp options.
+* [connectivity.hcl](./example/connectivity.hcl) Holds the information about the ergess VPC.
+* [resolving.hcl](./example/resolving.hcl) Holds the information about the resolving domains, both overriding and forwarding.
 
 
 ## Caveats
