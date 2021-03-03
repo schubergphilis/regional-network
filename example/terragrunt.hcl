@@ -1,5 +1,6 @@
 locals {
   configuration = read_terragrunt_config("${get_parent_terragrunt_dir()}/configuration.hcl").locals
+  layout        = read_terragrunt_config("${get_parent_terragrunt_dir()}/layout.hcl").locals
 }
 
 remote_state {
@@ -10,10 +11,10 @@ remote_state {
   }
   config = {
     bucket         = "tfstate-${local.configuration.account_id}"
-    key            = "${local.configuration.region}/${path_relative_to_include()}/terragrunt.tfstate"
+    key            = "${local.layout.region}/${path_relative_to_include()}/terragrunt.tfstate"
     region         = "${local.configuration.state_region}"
     encrypt        = true
-    dynamodb_table = "tgstate-locking-${local.configuration.region}"
+    dynamodb_table = "tgstate-locking-${local.layout.region}"
   }
 }
 
@@ -23,7 +24,7 @@ generate "provider" {
   contents  = <<EOF
 provider "aws" {
   version = "%{if local.configuration.aws_provider_version != ""}${local.configuration.aws_provider_version}%{else}no version set%{endif}"
-  region  = "%{if local.configuration.region != ""}${local.configuration.region}%{else}no region set%{endif}"
+  region  = "%{if local.layout.region != ""}${local.layout.region}%{else}no region set%{endif}"
 }
 EOF
 }
