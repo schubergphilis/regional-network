@@ -62,4 +62,64 @@ working as an upstream forwarder for an Active directory deployment, for example
 
 ## Relation to the code
 
-From the points above the VPCs per environment, the MESH VPCs, and the Service VPC are handled by the vpc-layout module 
+### VPC creation and peering
+
+From the points above the VPCs per environment, the Meshed VPCs, and the Service VPC are handled by the [vpc-layout](./vpc-layout/README.md) 
+module. That expects input as specified in the example [layout.hcl](./example/layout.hcl) and [connectivity.hcl](./example/connectivity.hcl) 
+which is used by the terragrunt code at [vpc-layout](./example/vpc-layout/terragrunt.hcl).
+
+The peering and the routing for the VPCs according to the design are handled by the [vpc-peering-routing](./vpc-peering-routing/README.md) 
+module which is used by the terragrunt code at [vpc-peering-routing](./example/vpc-peering-routing/terragrunt.hcl)
+
+## Transit gateway, external routing and egress flows
+
+The transit gateway, along with the egress VPC is handled by [external-connectivity](./external-connectivity/README.md) module
+which is used by the terragrunt code at [extrenal-connectivity](./example/external-connectivity/terragrunt.hcl). 
+The terragrunt module is using as input the variables specified at [connectivity.hcl](./example/connectivity.hcl) 
+
+The routing for external domains and the egress flow is managed by [external-connectivity-egress-routing](./external-connectivity-egress-routing/README.md)
+module which is used by the terragrunt code at [external-connectivity-egress-routing](./example/external-connectivity-egress-routing/terragrunt.hcl) 
+which uses inputs from both [layout.hcl](./example/layout.hcl) and [connectivity.hcl](./example/connectivity.hcl).
+
+## DNS Forwarders
+
+The DNS forwarders, OUTBOUT and INBOUND are handled by [dns-resolvers](./dns-resolvers/README.md) module which is used by the 
+terragrun code at [dns-resolvers](./example/dns-resolvers/terragrunt.hcl) and uses input from both [layout.hcl](./example/layout.hcl)
+and [resolving.hcl](./example/resolving.hcl)
+
+The association of the forwarding resolvers is managed by [dns-resolvers-associations](./dns-resolvers-associations/README.md) 
+that is used by the terragrunt code at [dns-resolvers-associations](./example/dns-resolvers-associations/terragrunt.hcl) 
+which uses input from both [layout.hcl](./example/layout.hcl) and [resolving.hcl](./example/resolving.hcl)
+
+
+## Submodules
+
+All the above modules depend and use modules that exist under [modules](./modules) that solve domain specific problems for the design. 
+
+
+## Usage
+
+Under [examle](./example) there is a fully functional structure for eu-west-1 region with default values. Edit accordingly for specific details.
+
+
+## Caveats
+
+The code implements a very specific design as explained and thus is very opinionated. 
+Currently some things that could be optional like enabling or disabling the egress VPC along with disabling or enabling 
+the per VPC nat gateways accordingly are not implemented as such. So the current code implements the design as is without much 
+optionality that will be implemented in time. 
+
+Assumptions used:
+
+* A Services VPC is always used.
+* Egress VPC is deployed, routing is applied for egress for all VPCs through that and the nat gateways of all the private subnets of all
+the VPCs will not be deployed.
+  
+* Only two VPCs with the same environment can exist in the layout, one segregated and one mesh. Terraform does not provide anyway to do
+variable validation depending on other variables so checking for wrong input is not possible to do so the care for the proper layout variable
+  setting is the user's responsibility.
+  
+* The environments supported are development, test, acceptance and production.
+
+If the above caveats are taken into consideration the code should be able to handle different number of VPCs from the design automatically.
+
