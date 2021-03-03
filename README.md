@@ -13,8 +13,7 @@ The pattern utilizes a VPC per invironment for development, test, acceptance and
 Each VPC will have public and private subnets as is described by AWS networking best practices.
 Those subnets will be shared through Resource Access Manager and all workloads deployd in a landing
 zone with this networking will get access to the subnets per their respective environment and deploy 
-resources based on the subnet sharing design. [AWS Documentation](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html) 
-on shared subnets.
+resources based on the subnet sharing design. [Shared Subnets Documentation.](https://docs.aws.amazon.com/vpc/latest/userguide/vpc-sharing.html)
 
 ### Mesh VPCs
 
@@ -34,7 +33,7 @@ The workloads that will be flagged as services will have their production accoun
 Effectively what that means is that from the workload's perspective they always have up to four environments: Development, 
 Test, Acceptance and Production with the production being isolated in case of "normal" workloads and connected to everything
 in case of a "service" workload. A good example for a "service" workload would be ansible [AWX](https://github.com/ansible/awx) / 
-[Tower](https://www.ansible.com/products/tower)that would need to be able to execute ansible scripts across all possible environments 
+[Tower](https://www.ansible.com/products/tower) that would need to be able to execute ansible scripts across all possible environments 
 or a hosted AD that would provide domain joins across environments.
 
 
@@ -47,16 +46,20 @@ and routed between them and the services VPC being peered and routed to all the 
 endpoints it will be forwarded to the transit gateway that will handle it accordingly.
     
 
-Egress VPC:
+### Egress VPC
     
-    A VPC designed for the express purpose of handling and centralizing all egress traffic from the private subnets 
-    in the network landscape. 
+A VPC designed for the express purpose of handling and centralizing all egress traffic from the private subnets 
+in the network landscape. 
 
 
-Dns Resolvers:
+### Dns Resolvers
 
-    Optional Route53 resolvers that function in the OUTBOUND direction to provide DNS forwarding capability for VPCs to 
-    non native resolvers (useful in hybrid deployments). 
-    Optional Route53 resolvers that function in the INBOUND direction to provide dns resolving capabilities for foreign
-    systems. (useful in hybrid deployments, working as an upstream forwarder for an Active directory deployment, for example)
+Optional Route53 resolvers that function in the [OUTBOUND](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver-forwarding-outbound-queries.html)
+direction to provide DNS forwarding capability for VPCs to non native resolvers (useful in hybrid deployments). 
+Optional Route53 resolvers that function in the [INBOUND](https://docs.aws.amazon.com/Route53/latest/DeveloperGuide/resolver.html) 
+direction to provide dns resolving capabilities for foreign systems. (useful in hybrid deployments, 
+working as an upstream forwarder for an Active directory deployment, for example)
 
+## Relation to the code
+
+From the points above the VPCs per environment, the MESH VPCs, and the Service VPC are handled by the vpc-layout module 
