@@ -23,7 +23,7 @@ resource "aws_ec2_transit_gateway_route" "blackhole_rfc1918_10" {
 
 resource "aws_ec2_transit_gateway_route" "blackhole_rfc1918_172" {
   for_each = local.all_tgw_route_table_ids
-  destination_cidr_block = "10.16.0.0/12"
+  destination_cidr_block = "172.16.0.0/12"
   blackhole = true
   transit_gateway_route_table_id = each.value
 }
