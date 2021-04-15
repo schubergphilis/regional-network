@@ -1,33 +1,17 @@
-resource "aws_security_group" "ssm_endpoint" {
+resource "aws_security_group" "vpc_endpoint" {
   name        = "${var.prepend_resource_type ? "sgp-ssm-endpoints-" : ""}${var.name}"
   description = "Allow inbound https traffic."
   vpc_id      = module.vpc.id
   tags        = merge(var.tags, { Name = "${var.prepend_resource_type ? "sgp-ssm-endpoints-" : ""}${var.name}" })
 }
 
-resource "aws_security_group_rule" "ssm_endpoint" {
+resource "aws_security_group_rule" "vpc_endpoint" {
   type              = "ingress"
   from_port         = "443"
   to_port           = "443"
   protocol          = "tcp"
   cidr_blocks       = [module.vpc.cidr_block]
-  security_group_id = aws_security_group.ssm_endpoint.id
-}
-
-resource "aws_security_group" "ebs_endpoint" {
-  name        = "${var.prepend_resource_type ? "sgp-ebs-endpoints-" : ""}${var.name}"
-  description = "Allow inbound https traffic."
-  vpc_id      = module.vpc.id
-  tags        = merge(var.tags, { Name = "${var.prepend_resource_type ? "sgp-ebs-endpoints-" : ""}${var.name}" })
-}
-
-resource "aws_security_group_rule" "ebs_endpoint" {
-  type              = "ingress"
-  from_port         = "443"
-  to_port           = "443"
-  protocol          = "tcp"
-  cidr_blocks       = [module.vpc.cidr_block]
-  security_group_id = aws_security_group.ebs_endpoint.id
+  security_group_id = aws_security_group.vpc_endpoint.id
 }
 
 module "vpc" {
@@ -54,26 +38,26 @@ module "vpc" {
   ebs_endpoint = {
     subnet_ids          = module.vpc.private_subnet_ids
     private_dns_enabled = true
-    security_group_ids  = [aws_security_group.ebs_endpoint.id]
+    security_group_ids  = [aws_security_group.vpc_endpoint.id]
   }
   ec2_endpoint = {
     subnet_ids          = module.vpc.private_subnet_ids
     private_dns_enabled = true
-    security_group_ids  = [aws_security_group.ssm_endpoint.id]
+    security_group_ids  = [aws_security_group.vpc_endpoint.id]
   }
   ec2messages_endpoint = {
     subnet_ids          = module.vpc.private_subnet_ids
     private_dns_enabled = true
-    security_group_ids  = [aws_security_group.ssm_endpoint.id]
+    security_group_ids  = [aws_security_group.vpc_endpoint.id]
   }
   ssm_endpoint = {
     subnet_ids          = module.vpc.private_subnet_ids
     private_dns_enabled = true
-    security_group_ids  = [aws_security_group.ssm_endpoint.id]
+    security_group_ids  = [aws_security_group.vpc_endpoint.id]
   }
   ssmmessages_endpoint = {
     subnet_ids          = module.vpc.private_subnet_ids
     private_dns_enabled = true
-    security_group_ids  = [aws_security_group.ssm_endpoint.id]
+    security_group_ids  = [aws_security_group.vpc_endpoint.id]
   }
 }
