@@ -74,6 +74,6 @@ variable "transit_gateway_name" {
 
 variable "transit_gateway_amazon_side_asn" {
   type        = string
-  description = "The asn of to asign to the transit gateway."
+  description = "The Amazon side asn number to assign to the transit gateway."
   default     = "64512"
 }
