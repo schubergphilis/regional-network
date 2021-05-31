@@ -1,6 +1,7 @@
 module "transit_gateway" {
   source                                 = "../modules/transit-gateway"
   name                                   = var.transit_gateway_name
+  amazon_side_asn                        = var.transit_gateway_amazon_side_asn
   description                            = "Transit gateway for region ${var.region}"
   enable_default_route_table_association = false
   enable_default_route_table_propagation = false
