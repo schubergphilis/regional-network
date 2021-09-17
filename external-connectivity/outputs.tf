@@ -75,8 +75,64 @@ output "vpc_layout_production_attachment_route_table_ids" {
 
 locals {
   data_exports = [{
+    key_name = "egress-private-route-table-ids"
+    value = join(",", module.egress_vpc.private_route_table_ids)
+  },
+  {
+    key_name = "egress-public-route-table-id"
+    value = module.egress_vpc.public_route_table_id
+  },
+  {
+    key_name = "egress-vpc-attachment-id"
+    value = module.egress_to_tgw_attachment.attachment_id
+  },
+  {
+    key_name = "egress-vpc-attachment-route-table-id"
+    value = module.egress_to_tgw_attachment.route_table_id
+  },
+  {
+    key_name = "egress-vpc-cidr-block"
+    value = module.egress_vpc.cidr_block
+  },
+  {
+    key_name = "external-route-table-id"
+    value = aws_ec2_transit_gateway_route_table.external_route_table.id
+  },
+  {
+    key_name = "non-production-route-table-id"
+    value = aws_ec2_transit_gateway_route_table.non_production_route_table.id
+  },
+  {
     key_name = "transit-gateway-id"
     value = module.transit_gateway.id
+  },
+  {
+    key_name = "vpc-layout-attachment-ids"
+    value = join(",", module.transit_gateway.vpc_layout_attachment_ids)
+  },
+  {
+    key_name = "vpc-layout-attachment-route-table-ids"
+    value = join(",", module.transit_gateway.vpc_layout_attachments_route_table_ids)
+  },
+  {
+    key_name = "vpc-layout-cidr-blocks"
+    value = join(",", module.transit_gateway.vpc_layout_cidr_blocks)
+  },
+  {
+    key_name = "vpc-layout-non-production-attachment-ids"
+    value = join(",", module.transit_gateway.vpc_layout_non_production_attachment_ids)
+  },
+  {
+    key_name = "vpc-layout-non-production-attachment-route-table-ids"
+    value = join(",", module.transit_gateway.vpc_layout_non_production_attachment_route_table_ids)
+  },
+  {
+    key_name = "vpc-layout-production-attachment-ids"
+    value = join(",", module.transit_gateway.vpc_layout_production_attachment_ids)
+  },
+  {
+    key_name = "vpc-layout-production-attachment-route-table-ids"
+    value = join(",", module.transit_gateway.vpc_layout_production_attachment_route_table_ids)
   }]
   data_exports_map = { for item in local.data_exports : item.key_name => item }
 }
