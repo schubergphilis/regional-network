@@ -74,8 +74,8 @@ output "vpc_layout_production_attachment_route_table_ids" {
 }
 
 locals {
-  data_exports = {
+  data_exports = [{
     name = "transit_gateway_id"
     value = module.transit_gateway.id
-  }
+  }]
 }
