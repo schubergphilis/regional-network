@@ -75,8 +75,8 @@ output "vpc_layout_production_attachment_route_table_ids" {
 
 locals {
   data_exports = [{
-    name = "transit_gateway_id"
+    key_name = "transit-gateway-id"
     value = module.transit_gateway.id
   }]
-  data_exports_map = { for item in local.data_exports : item.name => item }
+  data_exports_map = { for item in local.data_exports : item.key_name => item }
 }
