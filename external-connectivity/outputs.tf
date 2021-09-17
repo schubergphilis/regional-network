@@ -72,3 +72,15 @@ output "vpc_layout_production_attachment_route_table_ids" {
   description = "The attachment route table IDs of the production VPCs deployed in the layout."
   value       = module.transit_gateway.vpc_layout_production_attachment_route_table_ids
 }
+
+locals {
+  data_exports = {
+    name = "transit_gateway_id"
+    value = module.transit_gateway.id
+  }
+}
+
+output "testing" {
+  for_each = local.data_exports
+  value = each.value
+}
