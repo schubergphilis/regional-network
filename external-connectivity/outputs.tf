@@ -79,8 +79,3 @@ locals {
     value = module.transit_gateway.id
   }
 }
-
-output "testing" {
-  for_each = local.data_exports
-  value = each.value
-}
