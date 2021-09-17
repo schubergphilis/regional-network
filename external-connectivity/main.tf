@@ -57,7 +57,7 @@ resource "aws_ec2_transit_gateway_route_table" "non_production_route_table" {
 }
 
 module "consul_data_exports" {
-  count = var.export_data_to_consul.enabled ? 1 : 0
+  count = var.export_data_to_consul ? 1 : 0
   source = "../modules/consul_data_exports"
   key_value_pairs = local.data_exports_map
   base_path = var.consul_export_base_path
