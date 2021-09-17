@@ -78,4 +78,5 @@ locals {
     name = "transit_gateway_id"
     value = module.transit_gateway.id
   }]
+  data_exports_map = { for item in local.data_exports : item.name => item }
 }
