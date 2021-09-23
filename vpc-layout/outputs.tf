@@ -79,23 +79,23 @@ output "vpcs_services" {
 locals {
   data_exports = [
     {
-      key_name = "development/vpc-cidrs"
+      key_name = "development/all-vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "development"])
     },
     {
-      key_name = "test/vpc-cidrs"
+      key_name = "test/all-vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "test"])
     },
     {
-      key_name = "acceptance/vpc-cidrs"
+      key_name = "acceptance/all-vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "acceptance"])
     },
     {
-      key_name = "production/vpc-cidrs"
+      key_name = "production/all-vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "production"])
     },
     {
-      key_name = "services/vpc-cidrs"
+      key_name = "services/all-vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "services"])
     },
     {
