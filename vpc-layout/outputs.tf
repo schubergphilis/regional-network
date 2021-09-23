@@ -76,29 +76,108 @@ output "vpcs_services" {
   value       = [for vpc in values(module.layout)[*] : vpc if vpc.peer_with_all == true]
   description = "All the VPCs created by the vpcs definition that acting as a service VPC with connectivity to all"
 }
-
 locals {
   data_exports = [
     {
-      key_name = "development-cidrs"
+      key_name = "development/vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "development"])
     },
     {
-      key_name = "test-cidrs"
+      key_name = "test/vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "test"])
     },
     {
-      key_name = "acceptance-cidrs"
+      key_name = "acceptance/vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "acceptance"])
     },
     {
-      key_name = "production-cidrs"
+      key_name = "production/vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "production"])
     },
     {
-      key_name = "services-cidrs"
+      key_name = "services/vpc-cidrs"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "services"])
-    }
+    },
+    {
+      key_name = "development/mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "development" && vpc.mesh == true])
+    },
+    {
+      key_name = "test/mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "test" && vpc.mesh == true])
+    },
+    {
+      key_name = "acceptance/mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "acceptance" && vpc.mesh == true])
+    },
+    {
+      key_name = "production/mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "production" && vpc.mesh == true])
+    },
+    {
+      key_name = "services/mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "services" && vpc.mesh == true])
+    },
+    {
+      key_name = "development/non-mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "development" && vpc.mesh == false])
+    },
+    {
+      key_name = "test/non-mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "test" && vpc.mesh == false])
+    },
+    {
+      key_name = "acceptance/non-mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "acceptance" && vpc.mesh == false])
+    },
+    {
+      key_name = "production/non-mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "production" && vpc.mesh == false])
+    },
+    {
+      key_name = "services/non-mesh-vpc-cidrs"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.cidr_block if vpc.environment == "services" && vpc.mesh == false])
+    },
+    {
+      key_name = "development/non-mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "development" && vpc.mesh == false])
+    },
+    {
+      key_name = "test/non-mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "test" && vpc.mesh == false])
+    },
+    {
+      key_name = "acceptance/non-mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "acceptance" && vpc.mesh == false])
+    },
+    {
+      key_name = "production/non-mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "production" && vpc.mesh == false])
+    },
+    {
+      key_name = "services/non-mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "services" && vpc.mesh == false])
+    },
+    {
+      key_name = "development/mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "development" && vpc.mesh == true])
+    },
+    {
+      key_name = "test/mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "test" && vpc.mesh == true])
+    },
+    {
+      key_name = "acceptance/mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "acceptance" && vpc.mesh == true])
+    },
+    {
+      key_name = "production/mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "production" && vpc.mesh == true])
+    },
+    {
+      key_name = "services/mesh-subnet-share-arn"
+      value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "services" && vpc.mesh == true])
+    },
 
   ]
   data_exports_map = { for item in local.data_exports : item.key_name => item }
