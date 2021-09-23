@@ -5,15 +5,15 @@ variable "cloudwatch_flow_log_group_name" {
 
 variable "deployed_vpcs" {
   type = list(object({
-    id                 = string,
-    name               = string,
-    environment        = string,
-    availability_zones = list(string),
-    cidr_block         = string,
-    peer_with_all      = bool,
-    mesh               = bool,
-    cidr_block         = string,
-    private_subnet_ids = list(string)
+    id                      = string,
+    name                    = string,
+    environment             = string,
+    availability_zones      = list(string),
+    cidr_block              = string,
+    peer_with_all           = bool,
+    mesh                    = bool,
+    cidr_block              = string,
+    private_subnet_ids      = list(string)
     private_route_table_ids = list(string)
   tags = map(string) }))
   description = "A list of VPC that are deployed."
@@ -79,13 +79,13 @@ variable "transit_gateway_amazon_side_asn" {
 }
 
 variable "consul_export_base_path" {
-  type = string
+  type        = string
   description = "The base path within consul KV store to export data to."
-  default = null
+  default     = null
 }
 
 variable "export_data_to_consul" {
-  type = bool
+  type        = bool
   description = "If set will export all data to consul at specified base path."
-  default = false
+  default     = false
 }

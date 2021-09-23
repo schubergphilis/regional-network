@@ -1,5 +1,5 @@
 locals {
-  key_value_pairs_map = {for item in var.key_value_pairs: item.key_name => item}
+  key_value_pairs_map = { for item in var.key_value_pairs : item.key_name => item }
 }
 
 resource "consul_keys" "default" {

@@ -107,15 +107,15 @@ variable "transit_gateway_vpc_attachment_tags" {
 }
 
 variable "vpcs_to_attach" {
-  type        = list(object({
-    id                 = string,
-    name               = string,
-    environment        = string,
-    availability_zones = list(string),
-    peer_with_all      = bool,
-    mesh               = bool,
-    cidr_block         = string,
-    private_subnet_ids = list(string)
+  type = list(object({
+    id                      = string,
+    name                    = string,
+    environment             = string,
+    availability_zones      = list(string),
+    peer_with_all           = bool,
+    mesh                    = bool,
+    cidr_block              = string,
+    private_subnet_ids      = list(string)
     private_route_table_ids = list(string)
   tags = map(string) }))
   description = "A list of VPCs to attach to the gateway."

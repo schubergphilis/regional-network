@@ -81,25 +81,25 @@ locals {
   data_exports = [
     {
       key_name = "development-cidrs"
-      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'development'])
+      value    = join(",", [for vpc in(module.layout)[0] : vpc.cidr_block if vpc.environment == "development"])
     },
     {
       key_name = "test-cidrs"
-      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'test'])
+      value    = join(",", [for vpc in(module.layout)[0] : vpc.cidr_block if vpc.environment == "test"])
     },
     {
       key_name = "acceptance-cidrs"
-      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'acceptance'])
+      value    = join(",", [for vpc in(module.layout)[0] : vpc.cidr_block if vpc.environment == "acceptance"])
     },
     {
       key_name = "production-cidrs"
-      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'production'])
+      value    = join(",", [for vpc in(module.layout)[0] : vpc.cidr_block if vpc.environment == "production"])
     },
     {
       key_name = "services-cidrs"
-      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'services'])
+      value    = join(",", [for vpc in(module.layout)[0] : vpc.cidr_block if vpc.environment == "services"])
     }
 
   ]
-  data_exports_map = {for item in local.data_exports : item.key_name => item}
+  data_exports_map = { for item in local.data_exports : item.key_name => item }
 }

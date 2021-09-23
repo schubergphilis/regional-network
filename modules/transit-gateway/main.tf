@@ -6,7 +6,7 @@ resource "aws_ec2_transit_gateway" "default" {
   auto_accept_shared_attachments  = var.enable_auto_accept_shared_attachments ? "enable" : "disable"
   vpn_ecmp_support                = var.enable_vpn_ecmp_support ? "enable" : "disable"
   dns_support                     = var.enable_dns_support ? "enable" : "disable"
-  tags = merge(var.tags, var.transit_gateway_tags, { Name = var.name })
+  tags                            = merge(var.tags, var.transit_gateway_tags, { Name = var.name })
 }
 
 resource "aws_ram_resource_share" "default" {
@@ -15,8 +15,8 @@ resource "aws_ram_resource_share" "default" {
   allow_external_principals = var.ram_allow_external_principals
   depends_on                = [aws_ec2_transit_gateway.default]
   tags = merge(var.tags,
-               var.ram_tags,
-               { Name = "${length(var.ram_share_name) > 0 ? "${var.ram_share_name}-" : ""}${var.name}"})
+    var.ram_tags,
+  { Name = "${length(var.ram_share_name) > 0 ? "${var.ram_share_name}-" : ""}${var.name}" })
 }
 
 resource "aws_ram_resource_association" "default" {
