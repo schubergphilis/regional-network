@@ -89,3 +89,8 @@ variable "export_data_to_consul" {
   description = "If set will export all data to consul at specified base path."
   default     = false
 }
+
+variable "peer_regions" {
+  type = list(string)
+  default = []
+}

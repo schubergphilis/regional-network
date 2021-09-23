@@ -62,3 +62,21 @@ module "consul_data_exports" {
   key_value_pairs = local.data_exports
   base_path       = "${var.consul_export_base_path}/external-connectivity"
 }
+
+data "aws_ec2_transit_gateway_peering_attachment" "foreign_peer" {
+  for_each = toset(var.peer_regions)
+  filter {
+    name   = "tag:Name"
+    values = [format("attachment-%s-peer", each.value)]
+  }
+}
+
+locals {
+  foreign_peers_map = {for peer in toset([for peer in data.aws_ec2_transit_gateway_peering_attachment.foreign_peer[*] : values(peer)][0]) : peer.id => peer}
+}
+
+resource "aws_ec2_transit_gateway_route_table_association" "external_route_domain_to_foreign_global" {
+  for_each = local.foreign_peers_map
+  transit_gateway_attachment_id  = each.value.id
+  transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_route_table.id
+}
