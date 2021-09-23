@@ -82,3 +82,15 @@ variable "subnet_ids_for_resolver_endpoints" {
 	default     = []
 	description = "A list of subnet IDs to assign to the resolver endpoints."
 }
+
+variable "consul_export_base_path" {
+  type = string
+  description = "The base path within consul KV store to export data to."
+  default = null
+}
+
+variable "export_data_to_consul" {
+  type = bool
+  description = "If set will export all data to consul at specified base path."
+  default = false
+}

@@ -76,3 +76,30 @@ output "vpcs_services" {
   value       = [for vpc in values(module.layout)[*] : vpc if vpc.peer_with_all == true]
   description = "All the VPCs created by the vpcs definition that acting as a service VPC with connectivity to all"
 }
+
+locals {
+  data_exports = [
+    {
+      key_name = "development-cidrs"
+      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'development'])
+    },
+    {
+      key_name = "test-cidrs"
+      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'test'])
+    },
+    {
+      key_name = "acceptance-cidrs"
+      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'acceptance'])
+    },
+    {
+      key_name = "production-cidrs"
+      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'production'])
+    },
+    {
+      key_name = "services-cidrs"
+      value = join(",", [for vpc in (module.layout)[0] : vpc.cidr_block if vpc.environment == 'services'])
+    }
+
+  ]
+  data_exports_map = {for item in local.data_exports : item.key_name => item}
+}

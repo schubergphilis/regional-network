@@ -42,3 +42,16 @@ variable "vpcs" {
   }))
   description = "A list of VPC definitions to be deployed."
 }
+
+
+variable "consul_export_base_path" {
+  type = string
+  description = "The base path within consul KV store to export data to."
+  default = null
+}
+
+variable "export_data_to_consul" {
+  type = bool
+  description = "If set will export all data to consul at specified base path."
+  default = false
+}
