@@ -69,6 +69,10 @@ data "aws_ec2_transit_gateway_peering_attachment" "foreign_peer" {
     name   = "tag:Name"
     values = [format("attachment-%s-peer", each.value)]
   }
+  filter {
+    name   = "status"
+    values = ["available"]
+  }
 }
 
 locals {
