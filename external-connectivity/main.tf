@@ -70,7 +70,7 @@ data "aws_ec2_transit_gateway_peering_attachment" "foreign_peer" {
     values = [format("attachment-%s-peer", each.value)]
   }
   filter {
-    name   = "status"
+    name   = "state"
     values = ["available"]
   }
 }
