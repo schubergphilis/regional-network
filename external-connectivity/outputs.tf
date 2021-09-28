@@ -120,19 +120,36 @@ locals {
     },
     {
       key_name = "vpc-layout-non-production-attachment-ids"
-      value    = join(",", module.transit_gateway.vpc_layout_non_production_attachment_ids)
+      value = join(",", module.transit_gateway.vpc_layout_non_production_attachment_ids)
     },
     {
       key_name = "vpc-layout-non-production-attachment-route-table-ids"
-      value    = join(",", module.transit_gateway.vpc_layout_non_production_attachment_route_table_ids)
+      value = join(",", module.transit_gateway.vpc_layout_non_production_attachment_route_table_ids)
     },
     {
       key_name = "vpc-layout-production-attachment-ids"
-      value    = join(",", module.transit_gateway.vpc_layout_production_attachment_ids)
+      value = join(",", module.transit_gateway.vpc_layout_production_attachment_ids)
+    },
+    {
+      key_name = "vpc-layout-development-attachment-route-table-ids"
+      value = join(",", module.transit_gateway.vpc_layout_development_attachment_route_table_ids)
+    },
+    {
+      key_name = "vpc-layout-test-attachment-route-table-ids"
+      value = join(",", module.transit_gateway.vpc_layout_test_attachment_route_table_ids)
+    },
+    {
+      key_name = "vpc-layout-acceptance-attachment-route-table-ids"
+      value = join(",", module.transit_gateway.vpc_layout_acceptance_attachment_route_table_ids)
     },
     {
       key_name = "vpc-layout-production-attachment-route-table-ids"
-      value    = join(",", module.transit_gateway.vpc_layout_production_attachment_route_table_ids)
-  }]
-  data_exports_map = { for item in local.data_exports : item.key_name => item }
+      value = join(",", module.transit_gateway.vpc_layout_production_attachment_route_table_ids)
+    },
+    {
+      key_name = "vpc-layout-services-attachment-route-table-ids"
+      value = join(",", module.transit_gateway.vpc_layout_services_attachment_route_table_ids)
+    }
+  ]
+  data_exports_map = {for item in local.data_exports : item.key_name => item}
 }
