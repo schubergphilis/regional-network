@@ -29,7 +29,7 @@ module "outbound_resolver" {
 
 module "consul_data_exports" {
   count           = var.export_data_to_consul ? 1 : 0
-  source          = "../modules/consul_data_exports"
+  source          = "../modules/consul-data-exports"
   key_value_pairs = local.data_exports
   base_path       = "${var.consul_export_base_path}/dns-resolvers"
 }

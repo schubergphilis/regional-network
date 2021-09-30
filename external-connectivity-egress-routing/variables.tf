@@ -68,7 +68,39 @@ variable "vpc_layout_production_attachment_ids" {
   description = "The transit gateway attachment IDs of the production VPCs deployed in the layout."
 }
 
+variable "vpc_layout_development_attachment_route_table_ids" {
+  type        = list(string)
+  description = "The transit gateway attachment route table IDs of the development VPCs deployed in the layout."
+}
+
+variable "vpc_layout_test_attachment_route_table_ids" {
+  type        = list(string)
+  description = "The transit gateway attachment route table IDs of the test VPCs deployed in the layout."
+}
+
+variable "vpc_layout_acceptance_attachment_route_table_ids" {
+  type        = list(string)
+  description = "The transit gateway attachment route table IDs of the acceptance VPCs deployed in the layout."
+}
+
 variable "vpc_layout_production_attachment_route_table_ids" {
   type        = list(string)
   description = "The transit gateway attachment route table IDs of the production VPCs deployed in the layout."
+}
+
+variable "vpc_layout_services_attachment_route_table_ids" {
+  type        = list(string)
+  description = "The transit gateway attachment route table IDs of the services VPCs deployed in the layout."
+}
+
+variable "consul_data_lookup" {
+  type = bool
+  description = "Use consul as a data source to determine routes to deploy."
+  default = false
+}
+
+variable "peer_routing_regions" {
+  type = list(string)
+  description = "A list of regions to calculate regional routing for."
+  default = []
 }

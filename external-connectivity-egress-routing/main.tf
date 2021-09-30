@@ -90,3 +90,16 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "external_domain_to_v
   transit_gateway_attachment_id  = each.value
   transit_gateway_route_table_id = var.external_route_table_id
 }
+
+module "multi_region_routing" {
+  count = length(var.peer_routing_regions) > 0 ? 1 : 0
+  source = "../modules/multi-region-routing"
+  consul_data_lookup = var.consul_data_lookup
+  transit_gateway_id = var.transit_gateway_id
+  peer_regions = var.peer_routing_regions
+  development_route_tables = var.vpc_layout_development_attachment_route_table_ids
+  test_route_tables = var.vpc_layout_test_attachment_route_table_ids
+  acceptance_route_tables = var.vpc_layout_acceptance_attachment_route_table_ids
+  production_route_tables = var.vpc_layout_non_production_attachment_route_table_ids
+  services_route_tables = var.vpc_layout_services_attachment_route_table_ids
+}
