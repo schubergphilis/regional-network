@@ -100,6 +100,6 @@ module "multi_region_routing" {
   development_route_tables = var.vpc_layout_development_attachment_route_table_ids
   test_route_tables = var.vpc_layout_test_attachment_route_table_ids
   acceptance_route_tables = var.vpc_layout_acceptance_attachment_route_table_ids
-  production_route_tables = var.vpc_layout_non_production_attachment_route_table_ids
+  production_route_tables = var.vpc_layout_production_attachment_route_table_ids
   services_route_tables = var.vpc_layout_services_attachment_route_table_ids
 }
