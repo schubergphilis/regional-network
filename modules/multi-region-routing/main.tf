@@ -60,7 +60,7 @@ locals {
     local.acceptance_cidrs,
     local.production_cidrs,
     local.services_cidrs]
-  all_regional_cidrs = {for region, cidrs in {for index, regional_cidr in local.all_environmental_cidrs: keys(regional_cidr)[0] => flatten(values(regional_cidr))...}:region => flatten(cidrs)}
+  all_regional_cidrs = {for region in var.peer_regions : region => flatten([for data in local.all_environmental_cidrs : data[region]])}
 
   regional_development_routes = {for region in var.peer_regions : region => {for peer in setproduct(local.development_cidrs[region], toset(var.development_route_tables)) :
   format("%s-%s", peer[0], peer[1]) => {

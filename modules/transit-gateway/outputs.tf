@@ -35,6 +35,7 @@ output "vpc_layout_production_attachment_ids" {
   value = [for attachment in values(module.attachment_route_table)[*] :
   attachment.attachment_id if attachment.environment == "production"]
 }
+
 output "vpc_layout_development_attachment_route_table_ids" {
   description = "The attachment route table IDs of the development VPCs attached to the transit gateway."
   value       = [for attachment in values(module.attachment_route_table)[*] :
