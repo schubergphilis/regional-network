@@ -68,9 +68,29 @@ output "vpc_layout_production_attachment_ids" {
   value       = module.transit_gateway.vpc_layout_production_attachment_ids
 }
 
+output "vpc_layout_development_attachment_route_table_ids" {
+  description = "The attachment route table IDs of the development VPCs deployed in the layout."
+  value       = module.transit_gateway.vpc_layout_development_attachment_route_table_ids
+}
+
+output "vpc_layout_test_attachment_route_table_ids" {
+  description = "The attachment route table IDs of the test VPCs deployed in the layout."
+  value       = module.transit_gateway.vpc_layout_test_attachment_route_table_ids
+}
+
+output "vpc_layout_acceptance_attachment_route_table_ids" {
+  description = "The attachment route table IDs of the acceptance VPCs deployed in the layout."
+  value       = module.transit_gateway.vpc_layout_acceptance_attachment_route_table_ids
+}
+
 output "vpc_layout_production_attachment_route_table_ids" {
   description = "The attachment route table IDs of the production VPCs deployed in the layout."
   value       = module.transit_gateway.vpc_layout_production_attachment_route_table_ids
+}
+
+output "vpc_layout_services_attachment_route_table_ids" {
+  description = "The attachment route table IDs of the services VPCs deployed in the layout."
+  value       = module.transit_gateway.vpc_layout_services_attachment_route_table_ids
 }
 
 locals {
