@@ -93,14 +93,13 @@ variable "vpc_layout_services_attachment_route_table_ids" {
   description = "The transit gateway attachment route table IDs of the services VPCs deployed in the layout."
 }
 
-variable "consul_data_lookup" {
-  type = bool
-  description = "Use consul as a data source to determine routes to deploy."
-  default = false
+variable "consul_base_path" {
+  type        = string
+  description = "The base path in a consul kv store"
 }
 
 variable "peer_routing_regions" {
-  type = list(string)
+  type        = list(string)
   description = "A list of regions to calculate regional routing for."
-  default = []
+  default     = []
 }

@@ -91,6 +91,6 @@ variable "export_data_to_consul" {
 }
 
 variable "peer_regions" {
-  type = list(string)
+  type    = list(string)
   default = []
 }
