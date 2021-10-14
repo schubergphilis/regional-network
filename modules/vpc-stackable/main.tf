@@ -15,20 +15,20 @@ resource "aws_security_group_rule" "vpc_endpoint" {
 }
 
 module "vpc" {
-  source                         = "github.com/schubergphilis/terraform-aws-mcaf-vpc.git?ref=v1.7.0"
-  name                           = var.name
-  cidr_block                     = var.cidr_block
-  dhcp_options                   = var.dhcp_options
-  availability_zones             = var.availability_zones
-  tags                           = merge(var.tags, { environment = var.environment })
-  public_subnet_bits             = var.public_subnet_bits
-  private_subnet_bits            = var.private_subnet_bits
-  prepend_resource_type          = var.prepend_resource_type
-  private_s3_endpoint            = true
-  share_private_subnets          = true
-  share_public_subnets           = true
-  enable_nat_gateway             = var.enable_nat_gateway
-  subnet_sharing_custom_tags     = merge(var.tags, { environment = var.environment, resource-type = "ec2:Subnet" })
+  source                     = "github.com/schubergphilis/terraform-aws-mcaf-vpc.git?ref=v1.7.0"
+  name                       = var.name
+  cidr_block                 = var.cidr_block
+  dhcp_options               = var.dhcp_options
+  availability_zones         = var.availability_zones
+  tags                       = merge(var.tags, { environment = var.environment })
+  public_subnet_bits         = var.public_subnet_bits
+  private_subnet_bits        = var.private_subnet_bits
+  prepend_resource_type      = var.prepend_resource_type
+  private_s3_endpoint        = true
+  share_private_subnets      = true
+  share_public_subnets       = true
+  enable_nat_gateway         = var.enable_nat_gateway
+  subnet_sharing_custom_tags = merge(var.tags, { environment = var.environment, resource-type = "ec2:Subnet" })
   flow_logs = {
     retention_in_days = var.flow_log_retention_period_in_days
     traffic_type      = "ALL"
