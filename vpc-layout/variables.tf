@@ -47,7 +47,7 @@ variable "vpcs" {
 variable "consul_export_base_path" {
   type        = string
   description = "The base path within consul KV store to export data to."
-  default     = null
+  default     = ""
 }
 
 variable "export_data_to_consul" {
