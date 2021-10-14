@@ -94,9 +94,10 @@ output "vpc_layout_services_attachment_route_table_ids" {
 }
 
 locals {
-  data_exports = [{
-    key_name = "egress-private-route-table-ids"
-    value    = join(",", module.egress_vpc.private_route_table_ids)
+  data_exports = [
+    {
+      key_name = "egress-private-route-table-ids"
+      value    = join(",", module.egress_vpc.private_route_table_ids)
     },
     {
       key_name = "egress-public-route-table-id"
