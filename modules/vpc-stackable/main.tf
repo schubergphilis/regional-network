@@ -15,7 +15,7 @@ resource "aws_security_group_rule" "vpc_endpoint" {
 }
 
 module "vpc" {
-  source                     = "github.com/schubergphilis/terraform-aws-mcaf-vpc.git?ref=v1.7.0"
+  source                     = "github.com/schubergphilis/terraform-aws-mcaf-vpc.git?ref=v1.12.0"
   name                       = var.name
   cidr_block                 = var.cidr_block
   dhcp_options               = var.dhcp_options
