@@ -92,14 +92,14 @@ resource "aws_ec2_transit_gateway_route_table_propagation" "external_domain_to_v
 }
 
 module "multi_region_routing" {
-  count                    = length(var.peer_routing_regions) > 0 ? 1 : 0
-  source                   = "../modules/multi-region-routing"
-  consul_base_path         = var.consul_base_path
-  transit_gateway_id       = var.transit_gateway_id
-  peer_regions             = var.peer_routing_regions
-  development_route_tables = var.vpc_layout_development_attachment_route_table_ids
-  test_route_tables        = var.vpc_layout_test_attachment_route_table_ids
-  acceptance_route_tables  = var.vpc_layout_acceptance_attachment_route_table_ids
-  production_route_tables  = var.vpc_layout_production_attachment_route_table_ids
-  services_route_tables    = var.vpc_layout_services_attachment_route_table_ids
+  count                       = length(var.peer_routing_regions) > 0 ? 1 : 0
+  source                      = "../modules/multi-region-routing"
+  consul_base_path            = var.consul_base_path
+  transit_gateway_id          = var.transit_gateway_id
+  peer_routing_regions        = var.peer_routing_regions
+  development_route_table_ids = var.vpc_layout_development_attachment_route_table_ids
+  test_route_table_ids        = var.vpc_layout_test_attachment_route_table_ids
+  acceptance_route_table_ids  = var.vpc_layout_acceptance_attachment_route_table_ids
+  production_route_table_ids  = var.vpc_layout_production_attachment_route_table_ids
+  services_route_table_ids    = var.vpc_layout_services_attachment_route_table_ids
 }

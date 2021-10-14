@@ -64,7 +64,7 @@ module "consul_data_exports" {
 }
 
 data "aws_ec2_transit_gateway_peering_attachment" "foreign_peer" {
-  for_each = toset(var.peer_regions)
+  for_each = toset(var.peer_routing_regions)
   filter {
     name   = "tag:Name"
     values = [format("attachment-%s-peer", each.value)]

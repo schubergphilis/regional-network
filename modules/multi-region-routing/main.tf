@@ -1,15 +1,15 @@
 locals {
-  region_peers      = { for region in var.peer_regions : region => data.consul_keys.region_peer[region].var.attachment-peer if data.consul_keys.region_peer[region].var.attachment-peer != "" }
-  development_cidrs = { for region in var.peer_regions : region => split(",", data.consul_keys.development_cidrs[region].var.cidrs) if data.consul_keys.development_cidrs[region].var.cidrs != "" }
-  development_route_targets = { for region in var.peer_regions : region => flatten([for data in [local.development_cidrs, local.services_cidrs] : data[region]]) }
-  test_cidrs        = { for region in var.peer_regions : region => split(",", data.consul_keys.test_cidrs[region].var.cidrs) if data.consul_keys.test_cidrs[region].var.cidrs != "" }
-  test_route_targets = { for region in var.peer_regions : region => flatten([for data in [local.test_cidrs, local.services_cidrs] : data[region]]) }
-  acceptance_cidrs  = { for region in var.peer_regions : region => split(",", data.consul_keys.acceptance_cidrs[region].var.cidrs) if data.consul_keys.acceptance_cidrs[region].var.cidrs != "" }
-  acceptance_route_targets = { for region in var.peer_regions : region => flatten([for data in [local.acceptance_cidrs, local.services_cidrs] : data[region]]) }
-  production_cidrs  = { for region in var.peer_regions : region => split(",", data.consul_keys.production_cidrs[region].var.cidrs) if data.consul_keys.production_cidrs[region].var.cidrs != "" }
-  production_route_targets = { for region in var.peer_regions : region => flatten([for data in [local.production_cidrs, local.services_cidrs] : data[region]]) }
-  services_cidrs    = { for region in var.peer_regions : region => split(",", data.consul_keys.services_cidrs[region].var.cidrs) if data.consul_keys.services_cidrs[region].var.cidrs != "" }
-  services_route_targets  = {for region in var.peer_regions : region => flatten([for data in local.all_environmental_cidrs : data[region]])}
+  region_peers      = { for region in var.peer_routing_regions : region => data.consul_keys.region_peer[region].var.attachment-peer if data.consul_keys.region_peer[region].var.attachment-peer != "" }
+  development_cidrs = { for region in var.peer_routing_regions : region => split(",", data.consul_keys.development_cidrs[region].var.cidrs) if data.consul_keys.development_cidrs[region].var.cidrs != "" }
+  development_route_targets = { for region in var.peer_routing_regions : region => flatten([for data in [local.development_cidrs, local.services_cidrs] : data[region]]) }
+  test_cidrs        = { for region in var.peer_routing_regions : region => split(",", data.consul_keys.test_cidrs[region].var.cidrs) if data.consul_keys.test_cidrs[region].var.cidrs != "" }
+  test_route_targets = { for region in var.peer_routing_regions : region => flatten([for data in [local.test_cidrs, local.services_cidrs] : data[region]]) }
+  acceptance_cidrs  = { for region in var.peer_routing_regions : region => split(",", data.consul_keys.acceptance_cidrs[region].var.cidrs) if data.consul_keys.acceptance_cidrs[region].var.cidrs != "" }
+  acceptance_route_targets = { for region in var.peer_routing_regions : region => flatten([for data in [local.acceptance_cidrs, local.services_cidrs] : data[region]]) }
+  production_cidrs  = { for region in var.peer_routing_regions : region => split(",", data.consul_keys.production_cidrs[region].var.cidrs) if data.consul_keys.production_cidrs[region].var.cidrs != "" }
+  production_route_targets = { for region in var.peer_routing_regions : region => flatten([for data in [local.production_cidrs, local.services_cidrs] : data[region]]) }
+  services_cidrs    = { for region in var.peer_routing_regions : region => split(",", data.consul_keys.services_cidrs[region].var.cidrs) if data.consul_keys.services_cidrs[region].var.cidrs != "" }
+  services_route_targets  = {for region in var.peer_routing_regions : region => flatten([for data in local.all_environmental_cidrs : data[region]])}
   all_environmental_cidrs = [
     local.development_cidrs,
     local.test_cidrs,
@@ -18,7 +18,7 @@ locals {
     local.services_cidrs
   ]
 
-  regional_development_routes = { for region in var.peer_regions : region => { for peer in setproduct(local.development_route_targets[region], toset(var.development_route_tables)) :
+  regional_development_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.development_route_targets[region], toset(var.development_route_tables)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],
@@ -28,7 +28,7 @@ locals {
   }
   all_development_routes = merge(toset([for route, route_opts in local.regional_development_routes : route_opts])...)
 
-  regional_test_routes = { for region in var.peer_regions : region => { for peer in setproduct(local.test_cidrs[region], toset(var.test_route_tables)) :
+  regional_test_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.test_cidrs[region], toset(var.test_route_tables)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],
@@ -38,7 +38,7 @@ locals {
   }
   all_test_routes = merge(toset([for route, route_opts in local.regional_test_routes : route_opts])...)
 
-  regional_acceptance_routes = { for region in var.peer_regions : region => { for peer in setproduct(local.acceptance_cidrs[region], toset(var.acceptance_route_tables)) :
+  regional_acceptance_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.acceptance_cidrs[region], toset(var.acceptance_route_tables)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],
@@ -48,7 +48,7 @@ locals {
   }
   all_acceptance_routes = merge(toset([for route, route_opts in local.regional_acceptance_routes : route_opts])...)
 
-  regional_production_routes = { for region in var.peer_regions : region => { for peer in setproduct(local.production_cidrs[region], toset(var.production_route_tables)) :
+  regional_production_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.production_cidrs[region], toset(var.production_route_tables)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],
@@ -58,7 +58,7 @@ locals {
   }
   all_production_routes = merge(toset([for route, route_opts in local.regional_production_routes : route_opts])...)
 
-  regional_services_routes = { for region in var.peer_regions : region => { for peer in setproduct(local.services_route_targets[region], toset(var.services_route_tables)) :
+  regional_services_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.services_route_targets[region], toset(var.services_route_tables)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],

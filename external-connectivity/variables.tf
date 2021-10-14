@@ -90,7 +90,7 @@ variable "export_data_to_consul" {
   default     = false
 }
 
-variable "peer_regions" {
+variable "peer_routing_regions" {
   type    = list(string)
   default = []
 }
