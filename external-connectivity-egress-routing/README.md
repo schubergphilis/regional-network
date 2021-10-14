@@ -33,7 +33,7 @@ No requirements.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_consul_data_lookup"></a> [consul\_data\_lookup](#input\_consul\_data\_lookup) | Use consul as a data source to determine routes to deploy. | `bool` | `false` | no |
+| <a name="input_consul_base_path"></a> [consul\_base\_path](#input\_consul\_base\_path) | The base path in a consul kv store | `string` | n/a | yes |
 | <a name="input_egress_vpc_attachment_id"></a> [egress\_vpc\_attachment\_id](#input\_egress\_vpc\_attachment\_id) | The attachment ID of the Egress VPC. | `string` | n/a | yes |
 | <a name="input_egress_vpc_attachment_route_table_id"></a> [egress\_vpc\_attachment\_route\_table\_id](#input\_egress\_vpc\_attachment\_route\_table\_id) | The transit gateway attachment route table ID of the Egress VPC. | `string` | n/a | yes |
 | <a name="input_egress_vpc_cidr_block"></a> [egress\_vpc\_cidr\_block](#input\_egress\_vpc\_cidr\_block) | The cidr block of the Egress VPC. | `string` | n/a | yes |
