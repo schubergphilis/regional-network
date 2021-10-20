@@ -28,7 +28,7 @@ locals {
   }
   all_development_routes = merge(toset([for route, route_opts in local.regional_development_routes : route_opts])...)
 
-  regional_test_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.test_cidrs[region], toset(var.test_route_table_ids)) :
+  regional_test_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.test_route_targets[region], toset(var.test_route_table_ids)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],
@@ -38,7 +38,7 @@ locals {
   }
   all_test_routes = merge(toset([for route, route_opts in local.regional_test_routes : route_opts])...)
 
-  regional_acceptance_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.acceptance_cidrs[region], toset(var.acceptance_route_table_ids)) :
+  regional_acceptance_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.acceptance_route_targets[region], toset(var.acceptance_route_table_ids)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],
@@ -48,7 +48,7 @@ locals {
   }
   all_acceptance_routes = merge(toset([for route, route_opts in local.regional_acceptance_routes : route_opts])...)
 
-  regional_production_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.production_cidrs[region], toset(var.production_route_table_ids)) :
+  regional_production_routes = { for region in var.peer_routing_regions : region => { for peer in setproduct(local.production_route_targets[region], toset(var.production_route_table_ids)) :
       format("%s-%s", peer[0], peer[1]) => {
         cidr_block     = peer[0],
         route_table_id = peer[1],
