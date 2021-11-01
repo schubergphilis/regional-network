@@ -29,6 +29,8 @@ variable "vpcs" {
     cidr_block          = string
     public_subnet_bits  = number
     private_subnet_bits = number
+    private_subnet_tags = map(string)
+    public_subnet_tags  = map(string)
     peer_with_all       = bool
     mesh                = bool
     tags                = map(string)

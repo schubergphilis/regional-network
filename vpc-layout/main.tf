@@ -7,6 +7,8 @@ module "layout" {
   cidr_block                        = each.value.cidr_block
   public_subnet_bits                = each.value.public_subnet_bits
   private_subnet_bits               = each.value.private_subnet_bits
+  private_subnet_tags               = each.value.private_subnet_tags
+  public_subnet_tags                = each.value.public_subnet_tags
   peer_with_all                     = each.value.peer_with_all
   mesh                              = each.value.mesh
   tags                              = each.value.tags
