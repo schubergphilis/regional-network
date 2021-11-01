@@ -77,6 +77,18 @@ variable "public_subnet_bits" {
   description = "The number of bits used for the subnet mask."
 }
 
+variable "private_subnet_tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional tags to set on the private subnets"
+}
+
+variable "public_subnet_tags" {
+  type        = map(string)
+  default     = {}
+  description = "Additional tags to set on the public subnets"
+}
+
 variable "region" {
   type        = string
   description = "The region that the VPCs will be deployed in."

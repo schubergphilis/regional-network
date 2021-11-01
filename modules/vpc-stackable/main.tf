@@ -23,6 +23,8 @@ module "vpc" {
   tags                       = merge(var.tags, { environment = var.environment })
   public_subnet_bits         = var.public_subnet_bits
   private_subnet_bits        = var.private_subnet_bits
+  public_subnet_tags         = var.public_subnet_tags
+  private_subnet_tags        = var.private_subnet_tags
   prepend_resource_type      = var.prepend_resource_type
   private_s3_endpoint        = true
   share_private_subnets      = true
