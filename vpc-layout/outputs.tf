@@ -178,7 +178,10 @@ locals {
       key_name = "services/mesh-subnet-share-arn"
       value    = join(",", [for vpc in values(module.layout)[*] : vpc.subnet_share_arn if vpc.environment == "services" && vpc.mesh == true])
     },
-
+    {
+      key_name = "global/vpcs-all"
+      value = jsonencode(values(module.layout)[*])
+    }
   ]
   data_exports_map = { for item in local.data_exports : item.key_name => item }
 }
