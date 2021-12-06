@@ -9,7 +9,7 @@ output "configured_environments" {
 }
 
 output "services_vpc" {
-  value       = [for vpc in values(module.layout)[*] : vpc if vpc.peer_with_all == true][0]
+  value       = try([for vpc in values(module.layout)[*] : vpc if vpc.peer_with_all == true][0], [])
   description = "All the VPCs created by the vpcs definition that acting as a service VPC with connectivity to all"
 }
 
