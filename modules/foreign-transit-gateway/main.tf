@@ -11,7 +11,9 @@ resource "aws_ec2_transit_gateway_vpc_attachment" "default" {
   vpc_id                                          = var.vpc_with_foreign_routes.id
   transit_gateway_default_route_table_propagation = false
   transit_gateway_default_route_table_association = false
-  tags                                            = var.tags
+  tags                                            = merge(var.tags, {
+    Name = format("attachment-%s-foreign-%s", var.vpc_with_foreign_routes.environment, each.value.foreign_transit_gateway_id)
+  })
 }
 
 resource "aws_route" "default" {
