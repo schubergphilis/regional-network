@@ -86,8 +86,11 @@ resource "aws_ec2_transit_gateway_route_table_association" "external_route_domai
 }
 
 locals {
+  # Merge foreign routing information with any VPCs that match environment
   vpcs_with_foreign_routes = [for vpc in var.deployed_vpcs: merge(vpc, {for route in var.foreign_routes : "foreign_routes" => route... if route.environment == vpc.environment})]
+  # Filter out any VPC information that does not contain foreign routing info
   filtered_vpcs_with_foreign_routes = [for vpc in local.vpcs_with_foreign_routes : vpc if lookup(vpc, "foreign_routes", false) != false]
+  # Convert to map for module consumption
   vpcs_with_foreign_routes_map = {for vpc in local.filtered_vpcs_with_foreign_routes: vpc.name => vpc}
 }
 
