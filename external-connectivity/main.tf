@@ -84,3 +84,16 @@ resource "aws_ec2_transit_gateway_route_table_association" "external_route_domai
   transit_gateway_attachment_id  = each.value.id
   transit_gateway_route_table_id = aws_ec2_transit_gateway_route_table.external_route_table.id
 }
+
+locals {
+  vpcs_with_foreign_routes = [for vpc in var.deployed_vpcs: merge(vpc, {for route in var.foreign_routes : "foreign_routes" => route... if route.environment == vpc.environment})]
+  filtered_vpcs_with_foreign_routes = [for vpc in local.vpcs_with_foreign_routes : vpc if lookup(vpc, "foreign_routes", false) != false]
+  vpcs_with_foreign_routes_map = {for vpc in local.filtered_vpcs_with_foreign_routes: vpc.name => vpc}
+}
+
+module "foreign_transit_gateway" {
+  # If data is provided creates attachments and VPC routes to those attachments for specific cidrs
+  for_each = local.vpcs_with_foreign_routes_map
+  source = "../modules/foreign-transit-gateway"
+  vpc_with_foreign_routes = each.value
+}
