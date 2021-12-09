@@ -25,6 +25,24 @@ variable "dhcp_options" {
   default     = null
 }
 
+variable "ebs_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ebs interface endpoints per private subnet in a vpc"
+  default = true
+}
+
+variable "ec2_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ec2 interface endpoints per private subnet in a vpc"
+  default = true
+}
+
+variable "ec2messages_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ec2messages interface endpoints per private subnet in a vpc"
+  default = true
+}
+
 variable "enable_nat_gateway" {
   type        = bool
   default     = false
@@ -98,6 +116,18 @@ variable "public_subnet_tags" {
 variable "region" {
   type        = string
   description = "The region that the VPCs will be deployed in."
+}
+
+variable "ssm_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ssm interface endpoints per private subnet in a vpc"
+  default = true
+}
+
+variable "ssmmessages_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ssmmessages interface endpoints per private subnet in a vpc"
+  default = true
 }
 
 variable "tags" {
