@@ -40,19 +40,27 @@ variable "s3_interface_endpoints" {
 }
 
 variable "vpcs" {
-  type = list(object({
-    name                = string
-    environment         = string
-    availability_zones  = list(string)
-    cidr_block          = string
-    public_subnet_bits  = number
-    private_subnet_bits = number
-    private_subnet_tags = map(string)
-    public_subnet_tags  = map(string)
-    peer_with_all       = bool
-    mesh                = bool
-    tags                = map(string)
-    dhcp_options = object({
+  type        = list(object({
+    name                            = string
+    environment                     = string
+    availability_zones              = list(string)
+    ebs_interface_endpoints         = bool
+    ec2_interface_endpoints         = bool
+    ec2messages_interface_endpoints = bool
+    cidr_block                      = string
+    public_subnet_bits              = number
+    private_subnet_bits             = number
+    private_subnet_tags             = map(string)
+    public_subnet_tags              = map(string)
+    peer_with_all                   = bool
+    mesh                            = bool
+    mgn_interface_endpoints         = bool
+    s3_gateway_endpoint             = bool
+    s3_interface_endpoints          = bool
+    ssm_interface_endpoints         = bool
+    ssmmessages_interface_endpoints = bool
+    tags                            = map(string)
+    dhcp_options                    = object({
       domain_name          = string
       domain_name_servers  = list(string)
       ntp_servers          = list(string)
