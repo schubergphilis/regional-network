@@ -14,6 +14,20 @@ resource "aws_security_group_rule" "vpc_endpoint" {
   security_group_id = aws_security_group.vpc_endpoint.id
 }
 
+locals {
+  s3_interface_endpoint_configuration = var.s3_interface_endpoints ? {
+    subnet_ids          = module.vpc.private_subnet_ids
+    private_dns_enabled = true
+    security_group_ids  = [aws_security_group.vpc_endpoint.id]
+  } : null
+  mgn_interface_endpoint_configuration = var.mgn_interface_endpoints ? {
+    subnet_ids          = module.vpc.private_subnet_ids
+    private_dns_enabled = true
+    security_group_ids  = [aws_security_group.vpc_endpoint.id]
+  } : null
+}
+
+
 module "vpc" {
   source                     = "git@github.com:chris24walsh/terraform-aws-mcaf-vpc.git"
   name                       = var.name
@@ -26,7 +40,7 @@ module "vpc" {
   public_subnet_tags         = var.public_subnet_tags
   private_subnet_tags        = var.private_subnet_tags
   prepend_resource_type      = var.prepend_resource_type
-  private_s3_endpoint        = true
+  private_s3_endpoint        = var.s3_gateway_endpoint
   share_private_subnets      = true
   share_public_subnets       = true
   enable_nat_gateway         = var.enable_nat_gateway
@@ -36,6 +50,7 @@ module "vpc" {
     traffic_type      = "ALL"
     log_group_name    = var.cloudwatch_flow_log_group_name
     iam_role_name     = "${var.prepend_resource_type ? "vpc-flow-logs-" : ""}${var.name}-${var.region}"
+    iam_role_permission_boundary = null
   }
   ebs_endpoint = {
     subnet_ids          = module.vpc.private_subnet_ids
@@ -62,4 +77,6 @@ module "vpc" {
     private_dns_enabled = true
     security_group_ids  = [aws_security_group.vpc_endpoint.id]
   }
+  mgn_endpoint          = local.mgn_interface_endpoint_configuration
+  s3_interface_endpoint = local.s3_interface_endpoint_configuration
 }

@@ -10,6 +10,12 @@ variable "flow_log_retention_period_in_days" {
   default     = 1
 }
 
+variable "mgn_interface_endpoints" {
+  type = bool
+  description = "Control deployment of mgn interface endpoints per private subnet in a vpc"
+  default = false
+}
+
 variable "prepend_resource_type" {
   type        = bool
   default     = true
@@ -19,6 +25,18 @@ variable "prepend_resource_type" {
 variable "region" {
   type        = string
   description = "The region that the VPCs will be deployed in."
+}
+
+variable "s3_gateway_endpoint" {
+  type = bool
+  description = "Control deployment of s3 gateway endpoints in a vpc"
+  default = true
+}
+
+variable "s3_interface_endpoints" {
+  type = bool
+  description = "Control deployment of s3 interface endpoints per private subnet in a vpc"
+  default = false
 }
 
 variable "vpcs" {

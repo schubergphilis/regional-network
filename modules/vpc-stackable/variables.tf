@@ -48,6 +48,12 @@ variable "mesh" {
   description = "A flag to peer the VPC with all other mesh VPCs."
 }
 
+variable "mgn_interface_endpoints" {
+  type = bool
+  description = "Control deployment of mgn interface endpoints per private subnet in a vpc"
+  default = false
+}
+
 variable "name" {
   type        = string
   description = "Used as part of the resource names to indicate they are created and used within a specific name."
@@ -97,4 +103,16 @@ variable "region" {
 variable "tags" {
   type        = map(string)
   description = "A mapping of tags to assign to the resources."
+}
+
+variable "s3_gateway_endpoint" {
+  type = bool
+  description = "Control deployment of s3 gateway endpoints in a vpc"
+  default = true
+}
+
+variable "s3_interface_endpoints" {
+  type = bool
+  description = "Control deployment of s3 interface endpoints per private subnet in a vpc"
+  default = false
 }

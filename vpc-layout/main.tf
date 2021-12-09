@@ -11,6 +11,9 @@ module "layout" {
   public_subnet_tags                = each.value.public_subnet_tags
   peer_with_all                     = each.value.peer_with_all
   mesh                              = each.value.mesh
+  mgn_interface_endpoints           = var.mgn_interface_endpoints
+  s3_gateway_endpoint               = var.s3_gateway_endpoint
+  s3_interface_endpoints            = var.s3_interface_endpoints
   tags                              = each.value.tags
   dhcp_options                      = each.value.dhcp_options
   region                            = var.region
