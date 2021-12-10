@@ -15,8 +15,6 @@ variable "vpc_with_foreign_routes" {
       foreign_transit_gateway_id = string
       target_cidr_ranges         = list(string)
     }))
-    #    foreign_transit_gateway_id = string
-    #    target_cidr_ranges = list(string)
   tags = map(string) })
   description = "A list of all VPC's that are deployed."
 }
