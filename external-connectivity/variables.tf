@@ -98,9 +98,9 @@ variable "peer_routing_regions" {
 variable "foreign_routes" {
   type = list(object({
     foreign_transit_gateway_id = string
-    target_cidr_ranges = list(string)
-    environment = string
+    target_cidr_ranges         = list(string)
+    environment                = string
   }))
   description = "A list of foreign routing information"
-  default = null
+  default     = null
 }

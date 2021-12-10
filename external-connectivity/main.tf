@@ -24,10 +24,11 @@ module "egress_vpc" {
   share_public_subnets  = false
   enable_nat_gateway    = true
   flow_logs = {
-    retention_in_days = var.flow_log_retention_period_in_days
-    traffic_type      = "ALL"
-    iam_role_name     = "${var.prepend_resource_type ? "vpc-flow-logs-" : ""}${var.egress_vpc.name}-${var.region}"
-    log_group_name    = var.cloudwatch_flow_log_group_name
+    retention_in_days            = var.flow_log_retention_period_in_days
+    traffic_type                 = "ALL"
+    iam_role_name                = "${var.prepend_resource_type ? "vpc-flow-logs-" : ""}${var.egress_vpc.name}-${var.region}"
+    iam_role_permission_boundary = null
+    log_group_name               = var.cloudwatch_flow_log_group_name
   }
 }
 
@@ -87,16 +88,16 @@ resource "aws_ec2_transit_gateway_route_table_association" "external_route_domai
 
 locals {
   # Merge foreign routing information with any VPCs that match environment
-  vpcs_with_foreign_routes = [for vpc in var.deployed_vpcs: merge(vpc, {for route in var.foreign_routes : "foreign_routes" => route... if route.environment == vpc.environment})]
+  vpcs_with_foreign_routes = [for vpc in var.deployed_vpcs : merge(vpc, { for route in var.foreign_routes : "foreign_routes" => route... if route.environment == vpc.environment })]
   # Filter out any VPC information that does not contain foreign routing info
   filtered_vpcs_with_foreign_routes = [for vpc in local.vpcs_with_foreign_routes : vpc if lookup(vpc, "foreign_routes", false) != false]
   # Convert to map for module consumption
-  vpcs_with_foreign_routes_map = {for vpc in local.filtered_vpcs_with_foreign_routes: vpc.name => vpc}
+  vpcs_with_foreign_routes_map = { for vpc in local.filtered_vpcs_with_foreign_routes : vpc.name => vpc }
 }
 
 module "foreign_transit_gateway" {
   # If data is provided creates attachments and VPC routes to those attachments for specific cidrs
-  for_each = local.vpcs_with_foreign_routes_map
-  source = "../modules/foreign-transit-gateway"
+  for_each                = local.vpcs_with_foreign_routes_map
+  source                  = "../modules/foreign-transit-gateway"
   vpc_with_foreign_routes = each.value
 }
