@@ -11,7 +11,7 @@ module "transit_gateway" {
 }
 
 module "egress_vpc" {
-  source                = "github.com/schubergphilis/terraform-aws-mcaf-vpc.git?ref=v1.17.0"
+  source                = "github.com/schubergphilis/terraform-aws-mcaf-vpc.git?ref=v1.19.0"
   name                  = var.egress_vpc.name
   cidr_block            = var.egress_vpc.cidr_block
   availability_zones    = var.egress_vpc.availability_zones

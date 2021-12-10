@@ -54,7 +54,7 @@ locals {
 
 
 module "vpc" {
-  source                     = "git@github.com:chris24walsh/terraform-aws-mcaf-vpc.git"
+  source                     = "github.com/schubergphilis/terraform-aws-mcaf-vpc.git?ref=v1.19.0"
   name                       = var.name
   cidr_block                 = var.cidr_block
   dhcp_options               = var.dhcp_options
