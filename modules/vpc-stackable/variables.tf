@@ -25,6 +25,24 @@ variable "dhcp_options" {
   default     = null
 }
 
+variable "ebs_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ebs interface endpoints per private subnet in a vpc"
+  default = true
+}
+
+variable "ec2_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ec2 interface endpoints per private subnet in a vpc"
+  default = true
+}
+
+variable "ec2messages_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ec2messages interface endpoints per private subnet in a vpc"
+  default = true
+}
+
 variable "enable_nat_gateway" {
   type        = bool
   default     = false
@@ -46,6 +64,12 @@ variable "mesh" {
   type        = bool
   default     = false
   description = "A flag to peer the VPC with all other mesh VPCs."
+}
+
+variable "mgn_interface_endpoints" {
+  type = bool
+  description = "Control deployment of mgn interface endpoints per private subnet in a vpc"
+  default = false
 }
 
 variable "name" {
@@ -94,7 +118,31 @@ variable "region" {
   description = "The region that the VPCs will be deployed in."
 }
 
+variable "ssm_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ssm interface endpoints per private subnet in a vpc"
+  default = true
+}
+
+variable "ssmmessages_interface_endpoints" {
+  type = bool
+  description = "Control deployment of ssmmessages interface endpoints per private subnet in a vpc"
+  default = true
+}
+
 variable "tags" {
   type        = map(string)
   description = "A mapping of tags to assign to the resources."
+}
+
+variable "s3_gateway_endpoint" {
+  type = bool
+  description = "Control deployment of s3 gateway endpoints in a vpc"
+  default = true
+}
+
+variable "s3_interface_endpoints" {
+  type = bool
+  description = "Control deployment of s3 interface endpoints per private subnet in a vpc"
+  default = false
 }
